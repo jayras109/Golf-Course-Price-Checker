@@ -56,26 +56,33 @@ def cmd_scan(args):
 
 
 def cmd_run(args):
-    """Start the blocking APScheduler loop (useful on a server)."""
-    from apscheduler.schedulers.blocking import BlockingScheduler
+    """Start the background scheduler. Uses BackgroundScheduler + a sleep loop
+    so Ctrl+C works reliably on Windows."""
+    import time
+    from apscheduler.schedulers.background import BackgroundScheduler
     from checker import load_config, run_check
 
     config = load_config(args.config)
     hours = config["schedule"].get("check_interval_hours", 2)
 
-    scheduler = BlockingScheduler()
+    scheduler = BackgroundScheduler()
 
     def job():
         logging.info("Scheduled check starting…")
         run_check(config, mode="scheduled")
 
     scheduler.add_job(job, "interval", hours=hours, next_run_time=datetime.now())
+    scheduler.start()
     print(f"Scheduler running — check every {hours}h. Press Ctrl+C to stop.")
 
     try:
-        scheduler.start()
-    except (KeyboardInterrupt, SystemExit):
-        print("\nScheduler stopped.")
+        while True:
+            time.sleep(1)
+    except KeyboardInterrupt:
+        print("\nStopping…")
+    finally:
+        scheduler.shutdown(wait=False)
+        print("Scheduler stopped.")
 
 
 def cmd_setup(args):

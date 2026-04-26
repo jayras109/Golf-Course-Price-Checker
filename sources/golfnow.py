@@ -49,6 +49,8 @@ def fetch_tee_times(
     seen: set = set()
     unique = []
     for tt in tee_times:
+        if tt.tee_datetime.date() != search_date:
+            continue
         if tt.id not in seen:
             seen.add(tt.id)
             unique.append(tt)
