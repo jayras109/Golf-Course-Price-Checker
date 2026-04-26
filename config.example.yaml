@@ -1,0 +1,27 @@
+address: "123 Main St, Your City, TX 77000"
+max_distance_miles: 25
+group_size: 2
+
+price_thresholds:
+  holes_18: 50.00
+  holes_9:  25.00
+
+weather:
+  max_rain_chance: 25
+  min_temp_f: 45
+  max_temp_f: 95
+
+schedule:
+  check_interval_hours: 2
+  lookahead_days: 7
+  check_days:
+    - fri
+    - sat
+    - sun
+
+email:
+  smtp_host: smtp.gmail.com
+  smtp_port: 587
+  from_address: you@gmail.com
+  to_address:   you@gmail.com
+  app_password: ""    # Gmail App Password — myaccount.google.com/apppasswords

@@ -1,0 +1,8 @@
+config.yaml
+.geocache.json
+alerts.db
+golf_checker.log
+debug_golfnow_*.html
+__pycache__/
+*.pyc
+.env
